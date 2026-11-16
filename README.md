@@ -1,269 +1,69 @@
-# PathFinder
-A constraint-aware, curriculum-grounded, neuro-symbolic Generative AI system that produces logically valid, explainable, and adaptive DSA learning roadmaps using LLM reasoning, RAG, and dependency graph enforcement.
+# Mastery-Adaptive RAG System for DSA
 
-# Adaptive Learning Roadmap Generator  
-## A Neuro-Symbolic, Constraint-Aware Generative AI System for Curriculum Planning
+An intelligent, Mastery-Adaptive Retrieval-Augmented Generation (RAG) system designed to dynamically adjust its pedagogical tone and retrieval context based on a student's cognitive proficiency (Mastery Score). 
+
+This Capstone project utilizes a 3-tiered knowledge base (CLRS Textbook, GeeksForGeeks, MIT OCW), a 9-step Agentic Retrieval Pipeline, and continuous mathematical persona blending via GitHub Models (`gpt-4o-mini`).
+
+## Prerequisites
+- Python 3.9+
+- A GitHub Personal Access Token (for GitHub Models API access)
+
+## 🛠️ Setup Instructions
+
+### 1. Set Up the Virtual Environment
+Open your terminal in the project root directory (`Capstone_Proj`) and run:
+```bash
+python -m venv venv
+```
+
+Activate the virtual environment:
+- **Windows:**
+  ```bash
+  .\venv\Scripts\activate
+  ```
+- **Mac/Linux:**
+  ```bash
+  source venv/bin/activate
+  ```
+
+### 2. Install Dependencies
+Ensure your virtual environment is activated, then install the required packages:
+```bash
+pip install -r requirements.txt
+pip install python-dotenv
+```
+
+### 3. Configure Environment Variables
+This project uses GitHub Models for LLM generation and evaluation. You must provide a valid GitHub token.
+1. Create a file named `.env` in the root directory (`Capstone_Proj/.env`).
+2. Add your GitHub token to the file without quotes:
+```env
+GITHUB_TOKEN=your_actual_github_token_here
+```
 
 ---
 
-# 1. Introduction
+## 🚀 Running the System
 
-The **Adaptive Learning Roadmap Generator** is a Generative AI system designed to produce a short, personalized Data Structures & Algorithms (DSA) study roadmap based on a student's current coding profile snapshot.
+### 1. Interactive Q&A Mode
+To test the pipeline by asking questions and simulating different mastery levels (e.g., 0.2 for Beginner, 0.8 for Expert):
+```bash
+cd retrieval
+python test_interactive.py
+```
 
-Unlike generic study planners, this system:
-
-- Adapts to the student's strengths and weaknesses
-- Respects prerequisite relationships between topics
-- Operates under strict time constraints
-- Grounds all recommendations in curriculum content
-- Uses structured reasoning and validation
-
-The system combines:
-
-- Large Language Models (LLMs)
-- Retrieval-Augmented Generation (RAG)
-- A Topic Dependency Graph (symbolic reasoning)
-- A Reasoning-Aware Planning Agent
-- A Validation and Self-Correction loop
-
-This results in a **hybrid neuro-symbolic planning framework** for explainable adaptive learning.
+### 2. Running the Comprehensive Evaluation
+To run the automated, 14-metric RAGAS-inspired ablation study (which compares Full RAG vs Standard RAG vs Prompt-Only):
+```bash
+cd evaluation
+python eval_comprehensive.py
+```
+*Note: The evaluation script uses `gpt-4o-mini` as an LLM-Judge and will take some time to process all queries.*
 
 ---
 
-# 2. Problem Statement
+## 🏗️ Architecture Overview
 
-Students preparing for DSA interviews often face the following challenges:
-
-- They follow generic topic lists.
-- They ignore prerequisite dependencies.
-- They over-practice strong areas.
-- They lack structured, time-aware guidance.
-- They receive non-explainable recommendations.
-
-Existing AI-based systems:
-- Do not enforce logical prerequisite constraints.
-- Do not explicitly reason under time limits.
-- Do not validate structural correctness of study plans.
-- Often hallucinate topic sequencing.
-
-This project addresses these limitations by building a **constraint-aware, curriculum-grounded adaptive roadmap generator**.
-
----
-
-# 3. System Inputs
-
-## 3.1 Student Skill Snapshot
-
-The system takes a structured snapshot of a student’s current abilities.
-
-Example:
-
-```json
-{
-  "trees": "weak",
-  "dp": "very weak",
-  "arrays": "strong",
-  "graphs": "medium",
-  "time_available_hours": 5
-}
-```
-
-## 3.2 Curriculum Corpus (For RAG)
-
-The system stores curriculum materials in a vector database, including:
-
-- Course syllabi
-- CLRS textbook chapters
-- Lecture slides
-- Topic explanations
-- Difficulty metadata
-- Estimated learning time
-- Reference links
-
-All roadmap decisions are grounded in this retrieved curriculum content.
-
-# 4. System Architecture
-```json
-Student Snapshot
-      ↓
-(1) Skill Analyzer Agent
-      ↓
-(2) Weak Topic List
-      ↓
-(3) Graph Expansion (Prerequisites)
-      ↓
-(4) Candidate Topic Set
-      ↓
-(5) Eligible Topic Identification (Graph)
-      ↓
-(6) Iterative Ordering Loop (LLM + Graph)
-      ↓
-(7) RAG Retrieval (Grounding)
-      ↓
-(8) Planning Agent (LLM Reasoning)
-      ↓
-(9) Validation Agent
-      ↓
-Final Roadmap
-```
-# 5. Core Components
-
-## 5.1 Skill Analyzer Agent
-**Purpose**
-
-Transforms raw student statistics into structured planning signals.
-
-**Responsibilities**
-
-- Identify weak topics
-- Identify mastered topics
-- Rank priority areas
-- Extract time constraints
-- Determine difficulty tolerance
- 
-Example output:
-
-```json
-{
-  "priority_topics": ["dp", "trees"],
-  "mastered_topics": ["arrays"],
-  "time_budget": 5,
-  "difficulty_tolerance": "medium"
-}
-```
-
-## 5.2 Topic Dependency Graph (Symbolic Layer)
-Purpose
-
-Encodes prerequisite relationships between DSA topics as a Directed Acyclic Graph (DAG).
-
-Example Representation
-
-```json
-{
-  "Recursion": [],
-  "Arrays": [],
-  "Trees": ["Recursion"],
-  "Binary Search Tree": ["Trees"],
-  "Dynamic Programming": ["Recursion", "Arrays"],
-  "Graphs": [],
-  "BFS": ["Graphs"],
-  "DFS": ["Graphs", "Recursion"]
-}
-```
-
-Role in System
-
-- Expands weak topics to include required prerequisites
-- Enforces valid topic ordering
-- Enables topological sorting
-- Enables deterministic validation
-
-This prevents logically invalid study sequences.
-
-## 5.3 Curriculum Retrieval (RAG)
-
-The Retrieval-Augmented Generation module:
-
-- Retrieves prerequisite descriptions
-- Retrieves topic explanations
-- Retrieves estimated learning time
-- Retrieves textbook or syllabus references
-
-This ensures:
-
-- Curriculum alignment
-- Reduced hallucination
-- Explainable recommendations
-- Source-grounded reasoning
-
-## 5.4 Reasoning-Aware Planning Agent
-
-This is the core generative component.
-
-Instead of a single prompt, the agent reasons under constraints.
-
-Constraints Enforced
-
-- Total time ≤ available time
-- Weak topics must be prioritized
-- No topic before its prerequisites
-- Strong topics should not dominate
-- Each step must include explanation and reference
-
-Responsibilities
-
-- Select appropriate subgraph of topics
-- Allocate time per topic
-- Generate structured roadmap steps
-- Provide reasoning for sequencing
-- Justify decisions using curriculum references
-
-This transforms the system into a constraint-aware AI planner.
-
-## 5.5 Validation & Self-Correction Agent
-
-After roadmap generation, the system validates:
-
-- Prerequisite ordering violations
-- Time overflow
-- Weak-topic coverage
-- Structural consistency
-
-If violations occur:
-
-- The planner is re-invoked with feedback
-- The roadmap is revised
-- The process repeats until valid
-
-This introduces a self-correcting agentic loop, improving reliability.
-
-# 6. Output Format
-
-Example:
-
-```json
-{
-  "roadmap": [
-    {
-      "step": 1,
-      "topic": "Recursion",
-      "time_estimate_hours": 1.5,
-      "reason": "Prerequisite for Trees and Dynamic Programming",
-      "reference": "CLRS Chapter 15"
-    },
-    {
-      "step": 2,
-      "topic": "Binary Trees",
-      "time_estimate_hours": 1.5,
-      "reason": "Weak topic dependent on Recursion",
-      "reference": "Lecture 7 Notes"
-    }
-  ],
-  "total_time": 5
-}
-```
-
-Each step includes:
-
-- Topic
-- Time estimate
-- Reason for inclusion
-- Curriculum reference
-
-Tech stack:
-Language: Python
-
-LLM: LLaMA-3 8B Instruct (via Ollama)
-
-Embeddings: BGE-small (local)
-
-Vector DB: ChromaDB
-
-Graph Engine: NetworkX + JSON graph file
-
-Schema Validation: Pydantic
-
-API Layer: FastAPI
-
-UI: Streamlit
+1. **Tier-Specific Chunkers (`chunking/`)**: Custom Python parsers that preserve the structural integrity of CLRS (math), GFG (code), and MIT OCW (conversational text).
+2. **Retrieval Engine (`retrieval/`)**: A 9-step pipeline utilizing FAISS, BM25, Reciprocal Rank Fusion, and Cross-Encoder reranking. Slot allocation is mathematically governed by the student's mastery score.
+3. **Generation Engine (`generation/`)**: Calculates continuous probabilistic weights to instruct `gpt-4o-mini` to dynamically blend teaching personas (Patient Tutor vs. Expert Peer) while strictly grounding answers in the retrieved context.
