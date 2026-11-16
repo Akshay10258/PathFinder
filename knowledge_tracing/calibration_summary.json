@@ -1,0 +1,130 @@
+{
+  "personas": [
+    {
+      "name": "beginner_uniform",
+      "description": "Mostly incorrect across everything attempted \u2014 a true beginner.",
+      "checks": [
+        {
+          "topic": "sorting",
+          "predicted_mastery": 0.345,
+          "threshold": 0.4,
+          "expected": "weak",
+          "pass": true
+        },
+        {
+          "topic": "linked_lists",
+          "predicted_mastery": 0.3454,
+          "threshold": 0.4,
+          "expected": "weak",
+          "pass": true
+        }
+      ],
+      "known_limitation": false
+    },
+    {
+      "name": "strong_arrays_weak_graphs",
+      "description": "Confidently correct on arrays/sorting/searching, confidently wrong on graph_algorithms/shortest_paths/dynamic_programming.",
+      "checks": [
+        {
+          "topic": "graph_algorithms",
+          "predicted_mastery": 0.3031,
+          "threshold": 0.4,
+          "expected": "weak",
+          "pass": true
+        },
+        {
+          "topic": "shortest_paths",
+          "predicted_mastery": 0.344,
+          "threshold": 0.4,
+          "expected": "weak",
+          "pass": true
+        },
+        {
+          "topic": "dynamic_programming",
+          "predicted_mastery": 0.3021,
+          "threshold": 0.4,
+          "expected": "weak",
+          "pass": true
+        }
+      ],
+      "known_limitation": false
+    },
+    {
+      "name": "improving_dp",
+      "description": "Incorrect early on dynamic_programming, correct later \u2014 tests whether mastery follows a real trend rather than an unweighted running average.",
+      "checks": [],
+      "known_limitation": false
+    },
+    {
+      "name": "regressing_recursion",
+      "description": "Correct early on recursion_backtracking, incorrect later \u2014 the mirror image of improving_dp, same interaction count, opposite trend.",
+      "checks": [
+        {
+          "topic": "recursion_backtracking",
+          "predicted_mastery": 0.5188,
+          "threshold": 0.4,
+          "expected": "weak",
+          "pass": false
+        }
+      ],
+      "known_limitation": true
+    },
+    {
+      "name": "advanced_uniform",
+      "description": "Confidently correct across a wide spread of topics \u2014 an advanced student.",
+      "checks": [],
+      "known_limitation": false
+    }
+  ],
+  "known_limitations": [
+    {
+      "id": "recency_weighting",
+      "persona": "regressing_recursion",
+      "predicted_mastery": 0.5188,
+      "expected": "< 0.4 (weak)",
+      "status": "xfail",
+      "explanation": "The per-concept evidence term is a flat correct/total average with no recency weighting. This persona is 3 correct then 4 incorrect (43% overall) -- a clear recent decline the flat average doesn't reflect. See TESTING.md and RESEARCH_ADVANCEMENTS.md Sec 4.1 (Core Contribution 1)."
+    },
+    {
+      "id": "cross_concept_transfer",
+      "status": "xfail",
+      "advanced_mastery": 0.4818,
+      "beginner_mastery": 0.482,
+      "explanation": "With only ~10-12 online gradient steps taken, the model hasn't moved far enough from its shared content-grounded initialization to differentiate an advanced-history student from a beginner-history student on a topic NEITHER has touched. Expected to improve as real usage accumulates more online-adaptation steps. See TESTING.md."
+    }
+  ],
+  "regression_tests": [
+    {
+      "name": "wrong_answers_not_masked_by_unrelated_strong_history",
+      "value": 0.3828,
+      "threshold": 0.4,
+      "pass": true
+    },
+    {
+      "name": "untouched_topic_stays_near_neutral_after_unrelated_strong_history",
+      "value": 0.4813,
+      "threshold": 0.55,
+      "pass": true
+    }
+  ],
+  "trend_test": {
+    "improving_mastery": 0.6675,
+    "regressing_mastery": 0.5677,
+    "pass": true
+  },
+  "rank_correlation": {
+    "spearman_rho": 0.768,
+    "threshold": 0.5,
+    "pass": true
+  },
+  "cold_start": {
+    "predicted_mastery": 0.3,
+    "expected": 0.3,
+    "pass": true
+  },
+  "cross_concept_transfer": {
+    "advanced_mastery": 0.4818,
+    "beginner_mastery": 0.482,
+    "pass": false
+  }
+}
