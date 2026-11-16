@@ -1,0 +1,96 @@
+{
+  "demo_user": [
+    {
+      "role": "user",
+      "content": "Explain me about stacks",
+      "metadata": null
+    },
+    {
+      "role": "assistant",
+      "content": "## Answer\n\nA **stack** is a fundamental **dynamic set** that adheres to a **Last-In, First-Out (LIFO)** policy. In this structure, the element removed by the `DELETE` operation\u2014formally referred to as **POP**\u2014is the one most recently inserted via the **PUSH** operation. This behavior is analogous to a physical stack of plates, where you can only access the top element.\n\n### Implementation Paradigms\nThe efficiency of a stack depends on its underlying representation:\n\n*   **Array-based:** You maintain an attribute `S.top` that indexes the most recently inserted element in an array `S[1:n]`. `PUSH` increments `S.top` and stores the element, while `POP` retrieves the element at `S.top` and decrements the index. This provides **O(1)** performance for both operations. However, you must manage capacity; if `S.top` exceeds `S.size`, the stack **overflows**, and if you attempt to `POP` when `S.top = 0`, the stack **underflows**.\n*   **Linked List-based:** Each new element becomes the new head of the list. This implementation allows the stack to grow dynamically without a fixed capacity limit, also maintaining **O(1)** time complexity for operations.\n\n### Algorithmic Utility\nStacks are essential for managing state in various algorithms:\n*   **Subroutine Linkage:** The **call stack** is the mechanism by which computers manage function calls. When function A calls B, and B calls C, the stack stores the return addresses, ensuring the program resumes correctly after each function completes. Excessive recursion can lead to a **stack overflow** if the call stack exceeds its allocated memory.\n*   **Search and Backtracking:** **Depth-First Search (DFS)** utilizes a stack to explore paths as deeply as possible before backtracking. Similarly, backtracking algorithms use the stack to \"push\" a choice and \"pop\" (undo) it if that path fails.\n*   **Parsing and Evaluation:** Stacks are used to verify balanced parentheses (pushing openers, popping on closers) and to evaluate **postfix expressions** by pushing operands and popping them to perform operations.\n\n## Key Concepts\n*   **LIFO Policy:** The most recently added element is always the first to be removed.\n*   **Core Operations:** `PUSH` (insert) and `POP` (delete) both operate in **O(1)** time.\n*   **Call Stack:** A critical application used to track nested function calls and return addresses.\n*   **Error States:** **Overflow** occurs when pushing beyond capacity; **Underflow** occurs when popping an empty stack.\n\n## Code Example\n```python\n# Conceptual array-based stack implementation\nclass Stack:\n    def __init__(self, n):\n        self.S = [None] * n\n        self.top = 0  # Points to the next empty slot\n        self.size = n\n\n    def push(self, x):\n        if self.top >= self.size:\n            raise OverflowError(\"Stack overflow\")\n        self.S[self.top] = x\n        self.top += 1\n\n    def pop(self):\n        if self.top == 0:\n            raise IndexError(\"Stack underflow\")\n        self.top -= 1\n        return self.S[self.top]\n```\n\n## Common Pitfalls\n*   **Underflow/Overflow:** Failing to check if the stack is empty before a `POP` or full before a `PUSH` is a common source of runtime errors.\n*   **Confusing LIFO with FIFO:** Remember that a stack is **LIFO** (Last-In, First-Out), whereas a queue is **FIFO** (First-In, First-Out).\n\n## Think Deeper\n*   How would you implement a **queue** using two stacks, and what is the amortized time complexity of the `DEQUEUE` operation?\n*   Given that the call stack is finite, how does the memory footprint of an iterative approach to a problem compare to a recursive approach that relies on the call stack?",
+      "metadata": {
+        "mastery_label": "Advanced",
+        "complexity": "SIMPLE",
+        "sources": [
+          {
+            "tier": "T3",
+            "tier_label": "Intuitive Lecture (MIT OCW)",
+            "topic": "stacks",
+            "section": "Implementing a Stack"
+          },
+          {
+            "tier": "T2",
+            "tier_label": "Practical Tutorial (GeeksForGeeks)",
+            "topic": "stacks",
+            "section": "Stack Data Structure"
+          },
+          {
+            "tier": "T1",
+            "tier_label": "Formal Textbook (CLRS)",
+            "topic": "basic_data_structures",
+            "section": "Stacks"
+          },
+          {
+            "tier": "T1",
+            "tier_label": "Formal Textbook (CLRS)",
+            "topic": "basic_data_structures",
+            "section": "10.1.3 Stacks and queues"
+          },
+          {
+            "tier": "T1",
+            "tier_label": "Formal Textbook (CLRS)",
+            "topic": "basic_data_structures",
+            "section": "Chapter notes"
+          },
+          {
+            "tier": "T1",
+            "tier_label": "Formal Textbook (CLRS)",
+            "topic": "basic_data_structures",
+            "section": "Introduction"
+          },
+          {
+            "tier": "T1",
+            "tier_label": "Formal Textbook (CLRS)",
+            "topic": "basic_data_structures",
+            "section": "Elements of a dynamic set"
+          },
+          {
+            "tier": "T1",
+            "tier_label": "Formal Textbook (CLRS)",
+            "topic": "basic_data_structures",
+            "section": "10.1.2 Matrices"
+          },
+          {
+            "tier": "T3",
+            "tier_label": "Intuitive Lecture (MIT OCW)",
+            "topic": "stacks",
+            "section": "3. The Call Stack"
+          },
+          {
+            "tier": "T3",
+            "tier_label": "Intuitive Lecture (MIT OCW)",
+            "topic": "stacks",
+            "section": "Stacks in Algorithms"
+          }
+        ],
+        "verification": {
+          "faithfulness": 4,
+          "completeness": 5,
+          "issues": [
+            "The term 'dynamic set' is not mentioned in the provided context.",
+            "The term 'LIFO' is not explicitly mentioned in the provided context.",
+            "The term 'DELETE' is not used in the context; it uses 'Pop'.",
+            "The context does not mention 'stack underflow' or the condition 'S.top = 0'.",
+            "The context does not use the notation 'S[1:n]' or 'S.size'."
+          ]
+        },
+        "tier_distribution": {
+          "T1": 6,
+          "T2": 1,
+          "T3": 3
+        },
+        "model": "gemini"
+      }
+    }
+  ]
+}
