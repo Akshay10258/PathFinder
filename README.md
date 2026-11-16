@@ -29,7 +29,6 @@
 - [Demo Accounts](#demo-accounts)
 - [Research & Evaluation](#research--evaluation)
 - [Deployment](#deployment)
-- [Contributors](#contributors)
 
 ---
 
@@ -418,11 +417,5 @@ npx vercel
 See [`DEPLOY.md`](DEPLOY.md) for the full deployment guide including memory footprint considerations and environment variable setup.
 
 ---
-
-<div align="center">
-
-**Department of Computer Science, PES University, Bengaluru**
-
-*Capstone Project — 2026*
 
 </div>
